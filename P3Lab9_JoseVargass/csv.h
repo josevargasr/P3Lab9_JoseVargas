@@ -30,9 +30,10 @@ public:
     string GetFile_name() const;
     void SetFile_name(string file_name);
     vector<string> GetHeaders() const;
-    vector<string> GetData() const;
+    vector<vector<string> > GetData() const;
+
     
-    //vector<vector<string>> sort_data(int column, bool up);
+    vector<vector<string> > sort_data(int column, bool up);
     vector<string> get_column(int index) const;
     vector<string> get_row(int index) const;
     vector<string> get_max(int column) const;
@@ -47,8 +48,9 @@ public:
 private:
     string file_name;
     vector<string> headers;
-    //vector<vector<string>> data;
+    vector<vector<string> > data;
     int data_count;
+    bool hay_headers;
 };
 
 #endif /* CSV_H */
