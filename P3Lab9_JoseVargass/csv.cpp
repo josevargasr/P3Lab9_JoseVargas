@@ -62,7 +62,7 @@ int csv::GetData_count() const {
 }
 
 vector<vector<string> > csv::sort_data(int column, bool up) {
-
+    return data;
 }
 
 vector<string> csv::get_column(int index) const {
@@ -114,14 +114,26 @@ vector<string> csv::get_min(int column) const {
 
 void csv::print_data() {
     if (hay_headers) {
-        for (int h = 0; h < data.size(); h++)
-            cout << headers[h] << "     ";
+        for (int h = 0; h < headers.size(); h++){
+            if(h == headers.size()-1)
+                cout << headers[h];
+            else{
+                cout << headers[h];
+                cout << setw(30);
+            }
+        }
         cout << endl;
     }
-
+    
     for (int i = 0; i < data.size(); i++) {
         for (int j = 0; j < data [i].size(); j++) {
-            cout << data [i][j] << "       ";
+            if(j == data[i].size()-1)
+                cout << data [i][j];
+            else{
+                cout << data [i][j];
+                cout << setw(30);
+            }
+            
         }
         cout << endl;
     }
@@ -129,6 +141,8 @@ void csv::print_data() {
 
 void csv::truncate_row(int index) {
     data.erase(data.begin() + index);
+    data_count = data.size();
+    write_file();
 }
 
 void csv::truncate_column(int index) {
@@ -137,15 +151,38 @@ void csv::truncate_column(int index) {
             data[i].erase(data[i].begin() + index);
         }
     }
+    write_file();
 }
 
 csv csv::concat(csv file, string file_name) {
-
+    return file;
 }
 
 void csv::write_file() {
+    ofstream guardar;
+    guardar.open(file_name, ofstream::out | ofstream::trunc);
 
+    if (guardar.is_open()) {
+        if (hay_headers) {
+        for (int i = 0; i < headers.size(); i++) {
+                string header = headers[i];
+                guardar << header << ',';
+            }
+            guardar << endl;
+        }
+        for (int i = 0; i < data.size(); i++) {
+            vector<string> data2 = data[i];
+            for (int i = 0; i < data2.size(); i++) {
+                string data = data2[i];
+                guardar << data << ',';
+            }
+            guardar << endl;
+        }
+    }
+
+    guardar.close();
 }
+
 
 void csv::load_file(bool headers) {
     ifstream leerArchivo;
@@ -199,4 +236,5 @@ void csv::load_file(bool headers) {
     }
 
     leerArchivo.close();
+    data_count = data.size();
 }

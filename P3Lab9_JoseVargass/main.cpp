@@ -24,7 +24,6 @@ using namespace std;
 int main(int argc, char** argv) {
     csv* dataset_dengue = new csv("prototipoChikito.csv",true);
     dataset_dengue->print_data();
-    
     return 0;
 }
 
